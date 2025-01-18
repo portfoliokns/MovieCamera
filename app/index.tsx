@@ -1,6 +1,6 @@
 import { CameraView, CameraType, useCameraPermissions } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
-import { useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { Button, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function App() {
@@ -56,7 +56,7 @@ export default function App() {
     );
   }
 
-  async function startRecording() {
+  async function recording() {
     try {
       if (cameraRef.current && !isRecording) {
         setIsRecording(true);
@@ -64,19 +64,12 @@ export default function App() {
         const video = await cameraRef.current.recordAsync();
         setVideoUri(video.uri);
         setIsRecording(false);
+      } else if (cameraRef.current && isRecording) {
+        await cameraRef.current.stopRecording();
+        setIsRecording(false);
       }
     } catch (error) {
       console.error("録画エラー:", error);
-    }
-  }
-
-  async function stopRecording() {
-    try {
-      if (cameraRef.current && isRecording) {
-        await cameraRef.current.stopRecording();
-      }
-    } catch (error) {
-      console.error("録画停止エラー:", error);
     }
   }
 
@@ -95,14 +88,11 @@ export default function App() {
     <View style={styles.container}>
       <CameraView style={styles.camera} ref={cameraRef} mode="video">
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={startRecording}>
+          <TouchableOpacity style={styles.button} onPress={recording}>
             <Text style={styles.text}>{isRecording ? "🔴" : "🎥"}</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={stopRecording}>
-            <Text style={styles.text}>{isRecording ? "⏹️" : ""}</Text>
-          </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={saveVideo}>
-            <Text style={styles.text}>💽</Text>
+            <Text style={styles.text}>{videoUri ? "💽" : ""}</Text>
           </TouchableOpacity>
         </View>
       </CameraView>
