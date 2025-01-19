@@ -24,10 +24,9 @@ export default function Recorder({
   const [cameraPermission, requestCameraPermission] = useCameraPermissions();
   const [mediaPermission, requestMediaPermission] =
     MediaLibrary.usePermissions();
-
   const cameraRef = useRef<any>(null);
   const [isRecording, setIsRecording] = useState(false);
-  const [videoUri, setVideoUri] = useState<string | null>(null);
+  const [facing, setFacing] = useState<CameraType>("back");
 
   if (!cameraPermission || !mediaPermission) {
     return <View />;
@@ -77,36 +76,28 @@ export default function Recorder({
     try {
       if (cameraRef.current && !isRecording) {
         setIsRecording(true);
-        setVideoUri("");
         const video = await cameraRef.current.recordAsync();
-        setVideoUri(video.uri);
-        setIsRecording(false);
+        if (video.uri) {
+          const timestamp = getFormattedDate();
+          const fileUri = FileSystem.documentDirectory + `${timestamp}.mp4`;
+
+          await MediaLibrary.saveToLibraryAsync(video.uri);
+          await FileSystem.copyAsync({
+            from: video.uri,
+            to: fileUri,
+          });
+        }
       } else if (cameraRef.current && isRecording) {
-        await cameraRef.current.stopRecording();
         setIsRecording(false);
+        await cameraRef.current.stopRecording();
       }
     } catch (error) {
       console.error("録画エラー:", error);
     }
   }
 
-  async function saveVideo() {
-    try {
-      if (videoUri && !isRecording) {
-        const timestamp = getFormattedDate();
-        const fileUri = FileSystem.documentDirectory + `${timestamp}.mp4`;
-
-        await MediaLibrary.saveToLibraryAsync(videoUri);
-        await FileSystem.copyAsync({
-          from: videoUri,
-          to: fileUri,
-        });
-
-        setVideoUri("");
-      }
-    } catch (error) {
-      console.error("保存エラー:", error);
-    }
+  function toggleCameraFacing() {
+    setFacing((current) => (current === "back" ? "front" : "back"));
   }
 
   function getFormattedDate() {
@@ -123,7 +114,12 @@ export default function Recorder({
 
   return (
     <View style={styles.container}>
-      <CameraView style={styles.camera} ref={cameraRef} mode="video">
+      <CameraView
+        style={styles.camera}
+        ref={cameraRef}
+        mode="video"
+        facing={facing}
+      >
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.button}
@@ -136,8 +132,8 @@ export default function Recorder({
           <TouchableOpacity style={styles.button} onPress={recording}>
             <Text style={styles.text}>{isRecording ? "🔴" : "🎥"}</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={saveVideo}>
-            <Text style={styles.text}>{videoUri ? "💽" : ""}</Text>
+          <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
+            <Text style={styles.text}>🔄</Text>
           </TouchableOpacity>
         </View>
       </CameraView>
