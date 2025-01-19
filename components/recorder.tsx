@@ -97,7 +97,6 @@ export default function Recorder({
         const fileUri = FileSystem.documentDirectory + `${timestamp}.mp4`;
 
         await MediaLibrary.saveToLibraryAsync(videoUri);
-
         await FileSystem.copyAsync({
           from: videoUri,
           to: fileUri,
