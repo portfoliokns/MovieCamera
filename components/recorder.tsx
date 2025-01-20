@@ -97,6 +97,7 @@ export default function Recorder({
   }
 
   function toggleCameraFacing() {
+    if (isRecording) return;
     setFacing((current) => (current === "back" ? "front" : "back"));
   }
 
@@ -133,7 +134,7 @@ export default function Recorder({
             <Text style={styles.text}>{isRecording ? "🔴" : "🎥"}</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
-            <Text style={styles.text}>🔄</Text>
+            <Text style={styles.text}>{isRecording ? "" : "🔄"}</Text>
           </TouchableOpacity>
         </View>
       </CameraView>
