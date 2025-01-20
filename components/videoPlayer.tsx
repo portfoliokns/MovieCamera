@@ -1,8 +1,17 @@
 import React from "react";
-import { View, StyleSheet, Button, Dimensions } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Dimensions,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import { useVideoPlayer, VideoView } from "expo-video";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import * as FileSystem from "expo-file-system";
+import { handleShare } from "@/utils/sharing";
+import { handleDeleteVideo } from "@/hooks/deleteVideo";
 
 type RootStackParam = {
   Recorder: undefined;
@@ -29,14 +38,28 @@ export default function VideoPlayer({
   });
 
   return (
-    <View style={styles.contentContainer}>
-      <VideoView
-        style={styles.video}
-        player={player}
-        allowsFullscreen
-        allowsPictureInPicture
-      />
-    </View>
+    <ScrollView>
+      <View style={styles.contentContainer}>
+        <VideoView
+          style={styles.video}
+          player={player}
+          allowsFullscreen
+          allowsPictureInPicture
+        />
+
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            onPress={() => handleDeleteVideo({ videoUri, navigation })}
+          >
+            <Text style={styles.videoButton}>🚮</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => handleShare(videoUri)}>
+            <Text style={styles.videoButton}>📲</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </ScrollView>
   );
 }
 
@@ -51,7 +74,19 @@ const styles = StyleSheet.create({
     paddingHorizontal: 50,
   },
   video: {
-    width: width,
-    height: height * 0.85,
+    width: width * 0.78,
+    height: height * 0.83,
+  },
+  buttonContainer: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    flexWrap: "wrap",
+    marginVertical: 6,
+  },
+  videoButton: {
+    fontSize: width * 0.08,
+    padding: height * 0.002,
+    marginHorizontal: 30,
   },
 });

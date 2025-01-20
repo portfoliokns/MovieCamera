@@ -6,10 +6,12 @@ import {
   TouchableOpacity,
   StyleSheet,
   Dimensions,
-  Alert,
 } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import * as FileSystem from "expo-file-system";
+import { handleShare } from "@/utils/sharing";
+import { handleDelete } from "@/hooks/deleteVideos";
 
 type RootStackParam = {
   Recorder: undefined;
@@ -38,44 +40,14 @@ export default function List({
     }
   }
 
-  useEffect(() => {
-    loadVideos();
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      loadVideos();
+    }, [])
+  );
 
   function handleWatch(videoUri: string) {
     navigation.navigate("VideoPlayer", { videoUri });
-  }
-
-  function showDeleteAlert(onConfirm: () => void) {
-    Alert.alert(
-      "削除確認",
-      "この動画を削除してもよろしいですか？",
-      [
-        {
-          text: "キャンセル",
-          style: "cancel",
-        },
-        {
-          text: "削除",
-          onPress: onConfirm,
-        },
-      ],
-      { cancelable: true }
-    );
-  }
-
-  async function handleDelete(videoUri: string) {
-    showDeleteAlert(async () => {
-      try {
-        const path = FileSystem.documentDirectory + videoUri;
-        await FileSystem.deleteAsync(path);
-        setVideoFiles((prevFiles) =>
-          prevFiles.filter((file) => file !== videoUri)
-        );
-      } catch (error) {
-        console.error("保存エラー:", error);
-      }
-    });
   }
 
   return (
@@ -86,8 +58,14 @@ export default function List({
           .reverse()
           .map((item, index) => (
             <View key={index} style={styles.videoContainer}>
-              <TouchableOpacity onPress={() => handleDelete(item)}>
-                <Text style={styles.videoDelete}>🚮</Text>
+              <TouchableOpacity
+                onPress={() => handleDelete(item, setVideoFiles)}
+              >
+                <Text style={styles.videoButton}>🚮</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity onPress={() => handleShare(item)}>
+                <Text style={styles.videoButton}>📲</Text>
               </TouchableOpacity>
 
               <TouchableOpacity onPress={() => handleWatch(item)}>
@@ -120,7 +98,7 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     padding: 10,
   },
-  videoDelete: {
+  videoButton: {
     fontSize: width * 0.08,
     padding: height * 0.002,
     marginRight: 10,

@@ -1,7 +1,7 @@
 import { CameraView, CameraType, useCameraPermissions } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
 import * as FileSystem from "expo-file-system";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Button, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
@@ -109,7 +109,7 @@ export default function Recorder({
     const minutes = String(now.getMinutes()).padStart(2, "0");
     const seconds = String(now.getSeconds()).padStart(2, "0");
 
-    return `${year}-${month}-${day}_${hours}-${minutes}-${seconds}`;
+    return `${year}${month}${day}${hours}${minutes}${seconds}`;
   }
 
   return (
