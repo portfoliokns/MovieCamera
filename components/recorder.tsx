@@ -7,6 +7,7 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 type RootStackParam = {
   Recorder: undefined;
+  Black: undefined;
   List: undefined;
   VideoPlayer: { videoUri: string };
 };
@@ -136,6 +137,14 @@ export default function Recorder({
           <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
             <Text style={styles.text}>{isRecording ? "" : "🔄"}</Text>
           </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              navigation.navigate("Black");
+            }}
+          >
+            <Text style={styles.text}>🐦‍⬛</Text>
+          </TouchableOpacity>
         </View>
       </CameraView>
     </View>
@@ -175,7 +184,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 4,
   },
   text: {
-    fontSize: 40,
+    fontSize: 32,
     fontWeight: "bold",
   },
 });

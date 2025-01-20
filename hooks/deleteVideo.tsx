@@ -4,6 +4,7 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 type RootStackParam = {
   Recorder: undefined;
+  Black: undefined;
   List: undefined;
   VideoPlayer: { videoUri: string };
 };

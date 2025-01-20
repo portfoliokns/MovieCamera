@@ -15,6 +15,7 @@ import { handleDelete } from "@/hooks/deleteVideos";
 
 type RootStackParam = {
   Recorder: undefined;
+  Black: undefined;
   List: undefined;
   VideoPlayer: { videoUri: string };
 };
