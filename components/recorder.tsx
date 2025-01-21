@@ -98,7 +98,6 @@ export default function Recorder({
   }
 
   function toggleCameraFacing() {
-    if (isRecording) return;
     setFacing((current) => (current === "back" ? "front" : "back"));
   }
 
@@ -114,6 +113,23 @@ export default function Recorder({
     return `${year}${month}${day}${hours}${minutes}${seconds}`;
   }
 
+  function buttonNumberOne() {
+    if (isRecording) {
+      navigation.navigate("Black");
+    } else {
+      navigation.navigate("List");
+    }
+  }
+
+  function buttonNumberTwo() {
+    recording();
+  }
+
+  function buttonNumberThree() {
+    if (isRecording) return;
+    toggleCameraFacing();
+  }
+
   return (
     <View style={styles.container}>
       <CameraView
@@ -126,24 +142,16 @@ export default function Recorder({
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              navigation.navigate("List");
+              buttonNumberOne();
             }}
           >
-            <Text style={styles.text}>📁</Text>
+            <Text style={styles.text}>{isRecording ? "🐦‍⬛" : "📁"}</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={recording}>
+          <TouchableOpacity style={styles.button} onPress={buttonNumberTwo}>
             <Text style={styles.text}>{isRecording ? "🔴" : "🎥"}</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
+          <TouchableOpacity style={styles.button} onPress={buttonNumberThree}>
             <Text style={styles.text}>{isRecording ? "" : "🔄"}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              navigation.navigate("Black");
-            }}
-          >
-            <Text style={styles.text}>🐦‍⬛</Text>
           </TouchableOpacity>
         </View>
       </CameraView>
