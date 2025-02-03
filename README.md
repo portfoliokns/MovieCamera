@@ -1,50 +1,59 @@
-# Welcome to your Expo app 👋
+# このアプリケーションについて
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+このアプリケーションは React および ReactNative を用いて、独自に作成した動画撮影用のアプリとなります。
 
-## Get started
+# アプリを作成するに至った背景と使用用途
 
-1. Install dependencies
+アプリ起動後、すぐに動画撮影ができ、かつ相手に悟られないように(相手の怒りに触れないように)撮影できる機能が欲しかったために作成しました。具体的には煽り運転に遭ったり、不審者に絡まれたりすることが頻発し、素早く撮影ができなかったということが背景にあり、作成しています。
 
-   ```bash
-   npm install
-   ```
+# アプリの導入方法
 
-2. Start the app
+1. iOS デバイス(iPhone や iPad)または AndroidOS デバイスに"Expo Go"をインストールする。
 
-   ```bash
-    npx expo start
-   ```
+2. "Expo Go"を起動し、ローカルネットワークへのアクセスを許可する（おそらく許可しないと使えないと思う）
 
-In the output, you'll find options to open the app in a
+3. ブラウザから次のアドレスへアクセスし、Expo Go の Open を押す。またはカメラを起動し QR コードを読み込む([こちら](https://expo.dev/preview/update?message=%E3%83%9C%E3%82%BF%E3%83%B3%E9%85%8D%E7%BD%AE%E3%82%92%E5%A4%89%E6%9B%B4&updateRuntimeVersion=1.0.0&createdAt=2025-01-21T04%3A27%3A15.222Z&slug=exp&projectId=8c6b7a75-db46-44a2-adc2-839415568d1d&group=a84dc2af-bb44-43bd-a6dc-7703594ca243))
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+4. 初回アプリを起動すると、カメラへのアクセスや保存先ライブラリへのアクセス、マイクへのアクセスが求められるので、許可してください。なお保存先ライブラリへのアクセスは必須とはなりますが、保存済みの写真や動画はこのアプリでは使用しないので、もし個別にアクセスを設定できるのであれば、写真へのアクセス許可は不要です。
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+5. 以降、Expo Go アプリのキャッシュにこのアプリが保存され、Expo Go のトップページから使用することができます。ただしアプリをインストールしたり、Expo Go の仕様や仕様変更などに伴ってキャッシュがなくなる場合があるかもしれません。
 
-## Get a fresh project
+# アプリの使い方
 
-When you're ready, run:
+- アプリを起動すると、すぐにカメラが起動します。
+- 中央にあるカメラボタン（🎥）を押すと、撮影が開始されます。
+- 撮影中、撮影ボタン（🔴）を押すと、撮影が終了し、動画が自動で保存されます。
+- 撮影中、隠しボタン（🐦‍⬛）を押すと、黒い画面が表示されます。その間、撮影は継続されます。戻る（色が非常に薄い）を押すと、撮影中のカメラ映像が映ります。
+- トグルボタン（🔄）を押すと、前面と後面カメラを入れ替えることができます。
+- フォルダボタン（📁）を押すと、撮影した動画一覧を確認することができます。
+- 動画一覧で、削除ボタン（🚮）を押すと、動画を削除することができます。
+- 動画一覧で、共有ボタン（📲）を押すと、デバイスや他のアプリに動画を共有・アップロード・ダウンロードすることができます。
+- 動画一覧で、動画ファイルを選択すると、視聴ページに移ります。
+- 視聴ページでは、動画を視聴することができる他、動画の削除（🚮）や共有（📲）が可能です。
 
-```bash
-npm run reset-project
-```
+# アプリの仕様
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+- 動画を保存する際は、Expo Go のサンドボックスおよびデバイスの写真ライブラリの両方に保存されます。これは重要な証拠を確実に記録するという目的で、デバイス上の 2 箇所に保存しています。
+- 動画の撮影時、カメラ音声（シャッター音）は発生しません。
+- 撮影中、別のタスクへ切り替えたり、画面をスリープにするなどした場合の挙動については仕様として規定しておりません。しかし現状、動作を確認する限り、アプリを切り替えたタイミングやスリープとなったタイミングまでキャッシュされており、撮影ボタン（🔴）を押すと、そこまでの映像を動画として保存することができます。そのためデバイスや OS などの状況によってはこれらの操作を行った場合、動画が保存できることを保証していません。
 
-## Learn more
+# 想定する使用例とお勧めする使用例
 
-To learn more about developing your project with Expo, look at the following resources:
+万が一、見知らぬ第三者とのトラブル等が発生した場合に、このアプリを立ち上げ、カメラボタン（🎥）を押して、録画を開始してください。
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+# 使用しているツールなど
 
-## Join the community
+- TypeScript
+- React
+- React Native ([Expo](https://expo.dev/))
+- [Expo Go](https://apps.apple.com/jp/app/expo-go/id982107779)
 
-Join our community of developers creating universal apps.
+# 注意点
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- iOS および Android でビルドし、デプロイしていますが、Android の端末を所持していないため、動作の確認ができておりません。
+
+# 免責事項
+
+- このアプリケーションは GitHub の公開機能を用いて公開されています。このアプリケーションを使用したことにより発生した被害や損害について、このアプリの開発者は一切関与致しません。
+- 万が一、第三者とのトラブル等で生命に関わる問題等、個人では対処しきれない問題が発生した場合はこのアプリを使用せずに、警察や病院など公共機関へ連絡してください。
+- このアプリは第三者とのトラブル等で映像の記録が迫られるタイミングで使用することを想定し、作成しています。使用する際や記録した映像の使用は倫理や法令に基づいて使用してください。なおこのアプリは盗撮を目的に作ったものではないので、それを目的とした使用を一切禁じています。このアプリを使用した場合、これらを理解・同意して使用したものものします。
