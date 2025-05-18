@@ -12,7 +12,7 @@
 
 2. "Expo Go"を起動し、ローカルネットワークへのアクセスを許可する（おそらく許可しないと使えないと思う）
 
-3. ブラウザから次のアドレスへアクセスし、Expo Go の Open を押す。またはカメラを起動し QR コードを読み込む([こちら](https://expo.dev/preview/update?message=%E3%83%9C%E3%82%BF%E3%83%B3%E9%85%8D%E7%BD%AE%E3%82%92%E5%A4%89%E6%9B%B4&updateRuntimeVersion=1.0.0&createdAt=2025-01-21T04%3A27%3A15.222Z&slug=exp&projectId=8c6b7a75-db46-44a2-adc2-839415568d1d&group=a84dc2af-bb44-43bd-a6dc-7703594ca243))
+3. ブラウザから次のアドレスへアクセスし、Expo Go の Open を押す。またはカメラを起動し QR コードを読み込む([こちら](https://expo.dev/preview/update?message=SDK52%E2%86%9253%E5%AF%BE%E5%BF%9C&updateRuntimeVersion=1.0.0&createdAt=2025-05-18T05%3A46%3A05.997Z&slug=exp&projectId=8c6b7a75-db46-44a2-adc2-839415568d1d&group=84f830ab-f727-4e67-8962-b27c7406892e))
 
 4. 初回アプリを起動すると、カメラへのアクセスや保存先ライブラリへのアクセス、マイクへのアクセスが求められるので、許可してください。なお保存先ライブラリへのアクセスは必須とはなりますが、保存済みの写真や動画はこのアプリでは使用しないので、もし個別にアクセスを設定できるのであれば、写真へのアクセス許可は不要です。
 
@@ -51,6 +51,7 @@
 # 注意点
 
 - iOS および Android でビルドし、デプロイしていますが、Android の端末を所持していないため、動作の確認ができておりません。
+- android 端末では MediaLibrary への完全アクセスができないというポリシーとなっているため、android 端末では正常に動作しない場合があります。
 
 # 免責事項
 
