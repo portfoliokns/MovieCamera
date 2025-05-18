@@ -2,7 +2,14 @@ import { CameraView, CameraType, useCameraPermissions } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
 import * as FileSystem from "expo-file-system";
 import React, { useState, useRef, useEffect } from "react";
-import { Button, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Button,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  Dimensions,
+} from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 type RootStackParam = {
@@ -137,27 +144,28 @@ export default function Recorder({
         ref={cameraRef}
         mode="video"
         facing={facing}
-      >
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              buttonNumberOne();
-            }}
-          >
-            <Text style={styles.text}>{isRecording ? "🐦‍⬛" : "📁"}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={buttonNumberTwo}>
-            <Text style={styles.text}>{isRecording ? "🔴" : "🎥"}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={buttonNumberThree}>
-            <Text style={styles.text}>{isRecording ? "" : "🔄"}</Text>
-          </TouchableOpacity>
-        </View>
-      </CameraView>
+      />
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            buttonNumberOne();
+          }}
+        >
+          <Text style={styles.text}>{isRecording ? "🐦‍⬛" : "📁"}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={buttonNumberTwo}>
+          <Text style={styles.text}>{isRecording ? "🔴" : "🎥"}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={buttonNumberThree}>
+          <Text style={styles.text}>{isRecording ? "" : "🔄"}</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
+
+const { height, width } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
   container: {
@@ -171,10 +179,13 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   camera: {
-    flex: 1,
+    width: width,
+    height: height,
   },
   buttonContainer: {
-    flex: 1,
+    position: "absolute",
+    bottom: 0,
+    right: 0,
     flexDirection: "row",
     backgroundColor: "transparent",
     margin: 2,
